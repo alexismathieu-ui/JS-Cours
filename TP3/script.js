@@ -341,7 +341,7 @@ for (let m = 0; m < matieres.length; m++) {
         elevesMatiere[i] = elevesmatiere[i];
     }
 
-    // Tri des élèves par note (ordre décroissant)
+    // Tri des élèves par note
     for (let i = 0; i < elevesMatiere.length - 1; i++) {
         let indiceMax = i; // Indice de la meilleure note
 

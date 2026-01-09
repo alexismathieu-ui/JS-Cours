@@ -34,7 +34,7 @@ let minNote = notes[0]
 let maxNote = notes[0]
 
 
-for (let i = 0; i < notes.length; i++){
+for (let i = 1; i < notes.length; i++){
     if (notes[i] < minNote) {
         minNote = notes[i];
     }
@@ -100,13 +100,13 @@ console.log('===============================');
 
 //BONUS
 
-//Affichage du tableau a chaque échange sans le tri complet
+//Affichage du tableau a chaque échange dans le tri complet
 
 let notesBonus = [];
 
 for (let i = 0; i < NonTri.length; i++){
     notesBonus[i] = NonTri[i]
-}
+} // Copie le tableau non trié
 
 for (let i = 0; i < notesBonus.length - 1; i++) {
     let indiceMin = i;

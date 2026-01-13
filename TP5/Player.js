@@ -71,7 +71,9 @@ class Player {
 
   Animate() {
     //THe player is walking
-    if (this.iswalking) {
+    if (this.iswalking || this.currentwalking > 0 || this.walkspriteindex > 0) {
+      this.currentwalking = 0;
+      this.walkspriteindex = 0;
       this.currentwalking++;
       if (this.currentwalking >= this.walkspriteduration) {
         this.currentwalking = 0;
@@ -83,7 +85,13 @@ class Player {
     }
 
     //The player is attacking
-    else if (this.isattack) {
+    else if (
+      this.isattack ||
+      this.currentattacking > 0 ||
+      this.attackspriteindex > 0
+    ) {
+      this.currentattacking = 0;
+      this.attackspriteindex = 0;
       this.currentattacking++;
       if (this.currentattacking >= this.attackspriteduration) {
         this.currentattacking = 0;
@@ -94,34 +102,23 @@ class Player {
       }
     }
     //The player is dying
-    else if (this.isdying) {
+    else if (
+      this.isdying ||
+      this.currentdying > 0 ||
+      this.dyingspriteindex > 0
+    ) {
       this.currentdying++;
       if (this.currentdying >= this.dyingspriteduration) {
         this.currentdying = 0;
         this.dyingspriteindex++;
       }
       if (this.dyingspriteindex >= this.dyingspritenumber) {
-        this.dyingspriteindex = this.dyingspritenumber - 1;
+        this.dyingspriteindex = this.dyingspritenumber;
       }
     }
     //The player is idle
     else {
-      this.idle++;
-      if (this.idle >= 10) {
-        this.idle = 0;
-      }
-    }
-    if (!this.iswalking) {
       this.currentwalking = 0;
-      this.walkspriteindex = 0;
-    }
-    if (!this.isattack) {
-      this.currentattacking = 0;
-      this.attackspriteindex = 0;
-    }
-    if (!this.isdying) {
-      this.currentdying = 0;
-      this.dyingspriteindex = 0;
     }
 
     console.log("Walk animation :\n");
@@ -132,26 +129,26 @@ class Player {
       "/",
       this.walkspritenumber
     );
-    // console.log("Attack animation :\n");
-    // console.log("isattack = ", this.isattack);
-    // console.log(
-    //   "attackspriteindex = ",
-    //   this.attackspriteindex,
-    //   "/",
-    //   this.attackspritenumber
-    // );
-    // console.log("Dying animation :\n");
-    // console.log("isdying = ", this.isdying);
-    // console.log(
-    //   "dyingspriteindex = ",
-    //   this.dyingspriteindex,
-    //   "/",
-    //   this.dyingspritenumber
-    // );
+    console.log("Attack animation :\n");
+    console.log("isattack = ", this.isattack);
+    console.log(
+      "attackspriteindex = ",
+      this.attackspriteindex,
+      "/",
+      this.attackspritenumber
+    );
+    console.log("Dying animation :\n");
+    console.log("isdying = ", this.isdying);
+    console.log(
+      "dyingspriteindex = ",
+      this.dyingspriteindex,
+      "/",
+      this.dyingspritenumber
+    );
   }
 }
 
 toto = new Player(42, "toto", 1, [0, 0]);
-for (let i = 0; i < 13; i++) {
+for (let i = 0; i < 10; i++) {
   toto.Animate();
 }

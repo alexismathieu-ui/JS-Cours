@@ -1,154 +1,148 @@
-class Player {
-  constructor(id, name, skinID, positionX, positionY) {
-    this.id = id;
-    this.name = name;
-    this.skinID = skinID;
-    this.positionX = positionX;
-    this.positionY = positionY;
-    this.level = 1;
-    this.health = 100;
-    this.damage = 20;
-    this.speed = 1;
-    this.kill = false;
-    this.killCount = 0;
-    this.cooldown = 2;
-    this.isalive = true;
-    this.regenActive = false;
-    this.regen = 5;
-    this.maxhealth = 100;
-    this.maxcooldown = 2;
-    this.healthbar = 100;
-    this.direction = 0;
-    this.isattack = false;
-    this.iswalking = true;
-    this.isdying = false;
-    this.walkspriteduration = 2;
-    this.walkspriteindex = 0;
-    this.walkspritenumber = 9;
-    this.attackspriteindex = 0;
-    this.attackspriteduration = 2;
-    this.attackspritenumber = 8;
-    this.dyingspriteduration = 2;
-    this.dyingspriteindex = 0;
-    this.dyingspritenumber = 6;
-    this.idle = 0;
-    this.currentwalking = 0;
-    this.currentattacking = 0;
-    this.currentdying = 0;
-  }
-  update(updateData) {
-    this.health = updateData.health;
-    this.cooldown = updateData.cooldown;
-    this.damage = updateData.damage;
-    this.speed = updateData.speed;
-    this.level = updateData.level;
-    this.killCount = updateData.killCount;
-    this.positionX = updateData.positionX;
-    this.positionY = updateData.positionY;
-    this.kill = false;
-    this.maxhealth = updateData.maxhealth;
-    this.maxcooldown = updateData.maxcooldown;
-    this.isalive = false;
-    this.direction = updateData.direction;
-    this.isattack = updateData.isattack;
-    this.iswalking = updateData.iswalking;
-    this.isdying = updateData.isdying;
-    this.isalive = updateData.isalive;
-    this.walkspriteduration = updateData.walkspriteduration;
-    this.walkspriteindex = updateData.walkspriteindex;
-    this.walkspritenumber = updateData.walkspritenumber;
-    this.attackspriteindex = updateData.attackspriteindex;
-    this.attackspriteduration = updateData.attackspriteduration;
-    this.attackspritenumber = updateData.attackspritenumber;
-    this.dyingspriteduration = updateData.dyingspriteduration;
-    this.dyingspriteindex = updateData.dyingspriteindex;
-    this.dyingspritenumber = updateData.dyingspritenumber;
-    this.idle = updateData.idle;
-    this.currentwalking = updateData.currentwalking;
-    this.currentattacking = updateData.currentattacking;
-    this.currentdying = updateData.currentdying;
-  }
-
-  Animate() {
-    //THe player is walking
-    if (this.iswalking || this.currentwalking > 0 || this.walkspriteindex > 0) {
-      this.currentwalking = 0;
-      this.walkspriteindex = 0;
-      this.currentwalking++;
-      if (this.currentwalking >= this.walkspriteduration) {
-        this.currentwalking = 0;
-        this.walkspriteindex++;
-      }
-      if (this.walkspriteindex >= this.walkspritenumber) {
-        this.walkspriteindex = 0;
-      }
-    }
-
-    //The player is attacking
-    else if (
-      this.isattack ||
-      this.currentattacking > 0 ||
-      this.attackspriteindex > 0
-    ) {
-      this.currentattacking = 0;
-      this.attackspriteindex = 0;
-      this.currentattacking++;
-      if (this.currentattacking >= this.attackspriteduration) {
-        this.currentattacking = 0;
-        this.attackspriteindex++;
-      }
-      if (this.attackspriteindex >= this.attackspritenumber) {
-        this.attackspriteindex = 0;
-      }
-    }
-    //The player is dying
-    else if (
-      this.isdying ||
-      this.currentdying > 0 ||
-      this.dyingspriteindex > 0
-    ) {
-      this.currentdying++;
-      if (this.currentdying >= this.dyingspriteduration) {
-        this.currentdying = 0;
-        this.dyingspriteindex++;
-      }
-      if (this.dyingspriteindex >= this.dyingspritenumber) {
-        this.dyingspriteindex = this.dyingspritenumber;
-      }
-    }
-    //The player is idle
-    else {
-      this.currentwalking = 0;
-    }
-
-    console.log("Walk animation :\n");
-    console.log("iswalking = ", this.iswalking);
-    console.log(
-      "walkspriteindex = ",
-      this.walkspriteindex,
-      "/",
-      this.walkspritenumber
-    );
-    console.log("Attack animation :\n");
-    console.log("isattack = ", this.isattack);
-    console.log(
-      "attackspriteindex = ",
-      this.attackspriteindex,
-      "/",
-      this.attackspritenumber
-    );
-    console.log("Dying animation :\n");
-    console.log("isdying = ", this.isdying);
-    console.log(
-      "dyingspriteindex = ",
-      this.dyingspriteindex,
-      "/",
-      this.dyingspritenumber
-    );
-  }
+const directions = {
+    north: 0,
+    east: 1,
+    south: 2,
+    west: 3
 }
 
-toto = new Player(42, "toto", 1, [0, 0]);
-for (let i = 0; i < 10; i++) {
-  toto.Animate();
+class Player {
+    constructor(id, name, skinPath, position) {
+        // Unique identifier attributed by the server
+        this.id = id;
+        // Name of the player (chosen at portal)
+        this.name = name;
+        // Path to the spritesheet used to represent the player (idem)
+        this.skinPath = skinPath;
+
+        // --- RENDER positions ---
+        this.renderX = position[0];
+        this.renderY = position[1];
+
+        // --- Stats ---
+        this.lvl = 1;
+        this.hp = 100;
+        this.maxHp = 100;
+        this.speed = 0.2;
+
+        // --- Direction & states ---
+        this.direction = directions.south;
+        this.isWalking = false;
+        this.isAttacking = false;
+        this.isDying = false;
+        this.isDead = false;
+
+        // --- Animations (remains non affected by server updates, only concernes frontend logic) ---
+        this.walkSpriteIndex = 0;
+        this.walkSpritesNumber = 9;
+        this.currentWalkSpriteStep = 0;
+        this.walkSpriteDuration = 3;
+
+        this.attackSpriteIndex = 0;
+        this.attackSpritesNumber = 6;
+        this.currentAttackSpriteStep = 0;
+        this.attackSpriteDuration = 0;
+
+        this.deathSpriteIndex = 0;
+        this.deathSpritesNumber = 6;
+        this.currentDeathSpriteStep = 0;
+        this.deathSpriteDuration = 5;
+    }
+
+    update(updateData) {
+
+        // Update authoritative position
+        [this.renderX, this.renderY] = updateData.position;
+
+        // Update stats
+        this.name = updateData.name
+        this.lvl = updateData.lvl;
+        this.hp = updateData.hp;
+        this.maxHp = updateData.maxHp;
+        this.attackCooldown = updateData.attackCooldown;
+        this.currentAttackCooldown = updateData.currentAttackCooldown;
+        this.speed = updateData.speed;
+
+        this.direction = updateData.direction;
+        this.isAttacking = updateData.isAttacking;
+        this.isWalking = updateData.isWalking;
+        this.isDying = updateData.isDying;
+        this.skinPath = updateData.skinPath;
+    }
+
+    animate() {
+        // If the player is walking
+        if (this.isWalking) {
+            // Reset attack sprite index and current attack sprite's step to 0 as we may have interrupted an attack animation
+            this.attackSpriteIndex = 0;
+            this.currentAttackSpriteStep = 0;
+
+            // Increment the current walk sprite step to display the current walking animation sprite for the right number of frames
+            this.currentWalkSpriteStep++;
+            // If we displayed it for long enough
+            if (this.currentWalkSpriteStep >= this.walkSpriteDuration) {
+                // Then we reset our step and increment our sprite index to go for the next sprite in the animation
+                this.currentWalkSpriteStep = 0;
+                this.walkSpriteIndex++;
+            }
+            // If we reach the last sprite in the animation and try going for the next one
+            if (this.walkSpriteIndex >= this.walkSpritesNumber) {
+                // We reset our index to display the first sprite of the animation instead, forming a looping animation
+                this.walkSpriteIndex = 0;
+            }
+        }
+        // If the player is attacking, or the attack animation started already
+        else if (this.isAttacking || this.currentAttackSpriteStep > 0 || this.attackSpriteIndex > 0) {
+            // Reset the walking animation variables as we may have interrupted a walking animation
+            this.currentWalkSpriteStep = 0;
+            this.walkSpriteIndex = 0;
+            
+            // Increment the current attack sprite step to display the current attacking animation sprite for the right number of frames
+            this.currentAttackSpriteStep++;
+            // If we displayed it for long enough
+            if (this.currentAttackSpriteStep >= this.attackSpriteDuration) {
+                // Then we reset our step and increment our sprite index to go for the next sprite in the animation
+                this.currentAttackSpriteStep = 0;
+                this.attackSpriteIndex++;
+            }
+            // If we reach the last sprite in the animation and try going for the next one
+            if (this.attackSpriteIndex >= this.attackSpritesNumber){
+                /*
+                    We reset our sprite index to 0 for the next attack animation.
+                    This reset does not serve a looping purpose like for the walking animation ;
+                    The else if condition leading to our attack animation needs at least one of currentAttackSpriteStep and attackSpriteIndex to be > 0
+                    When we reach the if we are in right now, currentAttackSpriteStep is always equal to 0
+                    When we'll get out of it, attackSpriteIndex will be set to 0 too
+                    This will signify that the animation is over, and the else if condition leading to our attack animation should not trigger anymore.
+                    This mecanism is implemented to avoid playing several attacking animations in a row (graphically incoherent with our attack cooldown).
+                    The only exception would be for the server to maintain isAttacking at true even after the end of the animation.
+                    This is not supposed to happen as i programmed the server to maintain isAttacking at true for a very short amount of time.
+                */
+                
+                this.attackSpriteIndex = 0;
+            }
+        }
+        // If the player is dying, or the dying animation already started
+        else if (this.isDying || this.currentDeathSpriteStep > 0 || this.deathSpriteIndex > 0) {
+            // No resets here as this will be the last animation of the player (ce n'est qu'un au revoir bebou).
+            // Increment the current death sprite step to display the current death animation sprite for the right number of frames
+            this.currentDeathSpriteStep++;
+            // If we displayed it for long enough
+            if (this.currentDeathSpriteStep >= this.deathSpriteDuration) {
+                // Then we reset our step and increment our sprite index to go for the next sprite in the animation
+                this.currentDeathSpriteStep = 0;
+                this.deathSpriteIndex++;
+            }
+            // If we reach the last sprite in the animation and try going for the next one
+            if (this.deathSpriteIndex >= this.deathSpritesNumber) {
+                // It means the animation is over ; we set isDead at true to keep the player from being displayed in next frames
+                // e.g, we make it disappear like in the good old URSS days.
+                this.isDead = true;
+            }
+        }
+        // If the player is idle
+        else {
+            // We just select the first sprite of its walking animation
+            this.walkSpriteIndex = 0;
+        }
+    }
 }

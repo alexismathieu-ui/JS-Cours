@@ -87,6 +87,11 @@ game.update(backendData);
 
 // Simulate a player leaving and a new player joining
 const modifiedBackendData = JSON.parse(JSON.stringify(backendData));
+console.log(
+  "Le Joueur",
+  modifiedBackendData.players["3cd71bbb-6a6b-4d4e-80e3-107130328a27"].name,
+  "a quitter la partie"
+);
 delete modifiedBackendData.players["3cd71bbb-6a6b-4d4e-80e3-107130328a27"];
 modifiedBackendData.players["new-player-id"] = {
   name: "Fabrice",
@@ -104,4 +109,9 @@ modifiedBackendData.players["new-player-id"] = {
   attackCooldown: 1,
   currentAttackCooldown: 0,
 };
+console.log(
+  "Le Joueur",
+  modifiedBackendData.players["new-player-id"].name,
+  "A rejoint la partie"
+);
 game.update(modifiedBackendData);

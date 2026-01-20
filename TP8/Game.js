@@ -77,6 +77,19 @@ class Game {
         delete this.players[playerId];
       }
     }
+
+    // Update Position 
+    if (!this.lastPositions) this.lastPositions = {};
+
+    for (const id in this.players) {
+      const p = this.players[id];
+      const key = `${p.renderX},${p.renderY}`;
+
+      if (this.lastPositions[id] !== key) {
+        console.log(` ${p.name} bouge → x:${p.renderX} y:${p.renderY}`);
+        this.lastPositions[id] = key;
+      }
+    }
   }
 }
 

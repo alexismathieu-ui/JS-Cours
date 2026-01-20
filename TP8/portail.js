@@ -1,4 +1,4 @@
-let SkinPath = null;
+let skinPath = null;
 const form = document.getElementById("portail-form");
 
 form.addEventListener("submit", (e) => {
@@ -14,14 +14,14 @@ form.addEventListener("submit", (e) => {
   console.log("Backend :", backend);
   glitchEffect(form);
   // Vérification du skin
-  if (!SkinPath) {
+  if (!skinPath) {
     alert("Veuillez choisir un skin");
     return;
   }
 
   // Sauvegarde dans le localStorage
-  localStorage.setItem("skinPath", SkinPath);
-  console.log("Skin sélectionné :", SkinPath);
+  localStorage.setItem("skinPath", skinPath);
+  console.log("Skin sélectionné :", skinPath);
 
   Loading();
 });
@@ -130,9 +130,9 @@ for (let i = 1; i <= SKINS_COUNT; i++) {
   /*SELECTION DU SKIN*/
 
   canvas.addEventListener("click", () => {
-    SkinPath = `${SKINS_PATH}${i}.png`;
+    skinPath = `${SKINS_PATH}${i}.png`;
 
-    console.log("Skin sélectionné :", SkinPath);
+    console.log("Skin sélectionné :", skinPath);
 
     // Nettoyage du preview
     previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
@@ -205,3 +205,12 @@ window.addEventListener("load", () => {
   localStorage.removeItem("backend");
   localStorage.removeItem("skinPath");
 });
+
+form.addEventListener("submit", () => {
+  setTimeout(() => {
+    window.location.href = "game.html";
+  }, 2000); // Délai de 2 secondes avant la redirection
+});
+
+
+

@@ -1,0 +1,248 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+.jersey-10-regular {
+  font-family: "Jersey 10", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/*RESET*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Jersey 10", sans-serif;
+  font-weight: 400;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle, #13b4ac 0%, transparent 40%),
+    linear-gradient(135deg, #020409, #050a12);
+  color: #00fff2;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/*FOND*/
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: linear-gradient(
+      rgba(0, 255, 242, 0.08) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(0, 255, 242, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: gridMove 20s linear infinite;
+  z-index: -1;
+}
+
+@keyframes gridMove {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 400px 400px;
+  }
+}
+
+/*HEADER*/
+header {
+  text-align: center;
+  padding: 50px 20px 30px;
+}
+
+header h1 {
+  font-size: 72px;
+  letter-spacing: 6px;
+  color: #00fff2;
+  text-shadow: 0 0 10px #00fff2, 0 0 25px #00fff2,
+    0 0 50px rgba(0, 255, 242, 0.7);
+}
+
+/*CONTAINER*/
+.container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*FORMULAIRE*/
+#portail-form {
+  width: 340px;
+  padding: 35px;
+  border: 2px solid #13b4ac;
+  border-radius: 12px;
+  background: rgba(0, 20, 30, 0.75);
+  box-shadow: 0 0 30px rgba(0, 255, 242, 0.4),
+    inset 0 0 20px rgba(0, 255, 242, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  animation: appear 1s ease-out;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/*INPUTS*/
+#portail-form input {
+  padding: 14px;
+  background: transparent;
+  border: 2px solid #13b4ac;
+  border-radius: 6px;
+  color: #13b4ac;
+  font-size: 14px;
+  letter-spacing: 1px;
+  outline: none;
+  transition: 0.3s;
+  box-shadow: inset 0 0 10px rgba(0, 255, 242, 0.3);
+}
+
+#portail-form input::placeholder {
+  color: rgba(0, 255, 242, 0.6);
+}
+
+#portail-form input:focus {
+  box-shadow: 0 0 15px #13b4ac, inset 0 0 15px rgba(0, 255, 242, 0.6);
+  transform: scale(1.02);
+}
+
+/*BOUTON*/
+#portail-form button {
+  padding: 14px;
+  background: transparent;
+  border: 2px solid #ff00ff;
+  color: #ff00ff;
+  font-size: 16px;
+  letter-spacing: 2px;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s;
+  text-shadow: 0 0 10px #ff00ff;
+}
+
+#portail-form input,
+#portail-form button {
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+
+#portail-form button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 0, 255, 0.4),
+    transparent
+  );
+  transform: translateX(-100%);
+}
+
+#portail-form button:hover::before {
+  animation: scan 0.6s linear;
+}
+
+@keyframes scan {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+#portail-form button:hover {
+  box-shadow: 0 0 25px #ff00ff, inset 0 0 15px rgba(255, 0, 255, 0.5);
+  transform: scale(1.05);
+}
+
+/* MODAL */
+#skin-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.modal-content {
+  background: #111;
+  padding: 20px;
+  border-radius: 10px;
+  width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  color: white;
+}
+
+/* SKINS GRID */
+#skins-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.skin-item {
+  cursor: pointer;
+  border: 2px solid transparent;
+  padding: 5px;
+  transition: 0.2s;
+}
+
+.skin-item:hover {
+  border-color: cyan;
+  transform: scale(1.1);
+}
+
+.skin-item img {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+}
+
+/* PREVIEW */
+#selected-skin img {
+  width: 96px;
+  height: 96px;
+  image-rendering: pixelated;
+}
+
+canvas {
+  image-rendering: pixelated;
+}
+
+.skin-canvas {
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: 0.2s;
+}
+
+.skin-canvas:hover {
+  border-color: cyan;
+  transform: scale(1.1);
+}
+

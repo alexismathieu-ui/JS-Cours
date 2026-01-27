@@ -1,15 +1,4 @@
-/*
-Partie 4 – Interpolation des déplacements :
-Le serveur envoie des mises à jour 20 fois par seconde, tandis que le navigateur affiche environ 60 images par seconde.
-Sans interpolation, les mouvements paraissent saccadés. Vous lisserez les mouvements des personnages dans votre rendu pour réparer cette infâmie, qui paraît sûrement tout à fait normale à des gens comme Maxime.
-Dans la classe Player, ajoutez :
-●	Des propriétés de position précédente (écrasées par les positions actuelles avant que ces dernières ne soient elles-même remplacées par de nouvelles données dans la méthode update).
-●	Des propriétés de position de rendu (la position à laquelle le joueur est réellement affiché suite à l’interpolation, en opposition à la position précédente et à la nouvelle position).
-●	Une méthode interpolate(alpha), appelée à chaque frame, qui calcule les positions de rendu grâce au calcul d’interpolation.
-Le paramètre alpha représente la progression entre deux ticks serveur (0 → 1). Il sera calculé grâce au paramètre timestamp de la méthode loop de la classe GameController. 
-Le plus simple reste de calculer alpha dans la boucle du GameController.
-*/
-
+/*BONUS 2: INDICATEUR DE NOMBRE DE JOUEUR SUR LE NOMBRE TOTAL DE JOUEUR */
 class GameController {
     constructor() {
       
@@ -20,8 +9,11 @@ class GameController {
 
         this.lastGameState = null;
         this.lastServerUpdate = performance.now();
+
         // Permanently bind "this" at the instance of the GameController class
         this.loop = this.loop.bind(this);
+
+        this.isSpectator = false;
 
         // Regulates framerate to keep 60fps
         requestAnimationFrame(this.loop);
@@ -69,6 +61,7 @@ class GameController {
         }
         // Render the game view
         this.gameView.render();
+        this.gameView.timerSection();
 
      // Request the next frame
         requestAnimationFrame(this.loop);
@@ -156,6 +149,7 @@ class GameController {
             this.socket.send(JSON.stringify(inputMessage));
         }, this.SERVER_INTERVAL);
     }
+
 }
 
 // === Start the game controller by instantiating the GameController class ===

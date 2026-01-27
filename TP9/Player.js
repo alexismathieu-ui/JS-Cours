@@ -48,12 +48,12 @@ class Player {
         this.attackSpriteIndex = 0;
         this.attackSpritesNumber = 6;
         this.currentAttackSpriteStep = 0;
-        this.attackSpriteDuration = 0;
+        this.attackSpriteDuration = 3;
 
         this.deathSpriteIndex = 0;
         this.deathSpritesNumber = 6;
         this.currentDeathSpriteStep = 0;
-        this.deathSpriteDuration = 5;
+        this.deathSpriteDuration = 8;
     }
 
     update(updateData) {
@@ -85,6 +85,24 @@ class Player {
     }
 
     animate() {
+        // If the player is dying, or the dying animation already started
+        if (this.isDying || this.currentDeathSpriteStep > 0 || this.deathSpriteIndex > 0) {
+            // No resets here as this will be the last animation of the player (ce n'est qu'un au revoir bebou).
+            // Increment the current death sprite step to display the current death animation sprite for the right number of frames
+            this.currentDeathSpriteStep++;
+            // If we displayed it for long enough
+            if (this.currentDeathSpriteStep >= this.deathSpriteDuration) {
+                // Then we reset our step and increment our sprite index to go for the next sprite in the animation
+                this.currentDeathSpriteStep = 0;
+                this.deathSpriteIndex++;
+            }
+            // If we reach the last sprite in the animation and try going for the next one
+            if (this.deathSpriteIndex >= this.deathSpritesNumber) {
+                // It means the animation is over ; we set isDead at true to keep the player from being displayed in next frames
+                // e.g, we make it disappear like in the good old URSS days.
+                this.isDead = true;
+            }
+        }
         // If the player is walking
         if (this.isWalking) {
             // Reset attack sprite index and current attack sprite's step to 0 as we may have interrupted an attack animation
@@ -134,24 +152,6 @@ class Player {
                 */
                 
                 this.attackSpriteIndex = 0;
-            }
-        }
-        // If the player is dying, or the dying animation already started
-        else if (this.isDying || this.currentDeathSpriteStep > 0 || this.deathSpriteIndex > 0) {
-            // No resets here as this will be the last animation of the player (ce n'est qu'un au revoir bebou).
-            // Increment the current death sprite step to display the current death animation sprite for the right number of frames
-            this.currentDeathSpriteStep++;
-            // If we displayed it for long enough
-            if (this.currentDeathSpriteStep >= this.deathSpriteDuration) {
-                // Then we reset our step and increment our sprite index to go for the next sprite in the animation
-                this.currentDeathSpriteStep = 0;
-                this.deathSpriteIndex++;
-            }
-            // If we reach the last sprite in the animation and try going for the next one
-            if (this.deathSpriteIndex >= this.deathSpritesNumber) {
-                // It means the animation is over ; we set isDead at true to keep the player from being displayed in next frames
-                // e.g, we make it disappear like in the good old URSS days.
-                this.isDead = true;
             }
         }
         // If the player is idle

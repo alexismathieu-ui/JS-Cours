@@ -1,0 +1,48 @@
+/* Reset basique */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fond de page */
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: radial-gradient(circle at top, #1b2735, #090a0f);
+    font-family: Arial, sans-serif;
+}
+
+/* Conteneur du jeu */
+.game-container {
+    padding: 20px;
+    border-radius: 16px;
+
+    background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+    box-shadow:
+        0 0 30px rgba(0, 0, 0, 0.8),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+/* Canvas */
+canvas {
+    display: block;
+    border-radius: 12px;
+
+    background: linear-gradient(
+        to bottom,
+        #91cbe2 0%,
+        #6fb1cc 50%,
+        #4a8fa8 100%
+    );
+
+    box-shadow:
+        0 0 25px rgba(0, 0, 0, 0.9),
+        inset 0 0 15px rgba(255, 255, 255, 0.15);
+
+    image-rendering: pixelated;
+}
+

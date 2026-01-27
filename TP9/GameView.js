@@ -48,8 +48,17 @@ class GameView {
         this.ctx = this.canvas.getContext("2d");
         this.width = this.canvas.width;
         this.height = this.canvas.height;
+        this.background = new Image();
+        this.background.src = 'images/Sol.jpg';
 
         this.loadedSprites = {};
+
+    this.victoryTime = 0;
+    this.victoryStarted = false;
+    this.victoryParticles = [];
+    this.victoryRings = [];
+    this.victoryStars = [];
+    this.screenShake = 0;
     }
 
     clear() {
@@ -57,8 +66,15 @@ class GameView {
     }
 
     drawBackground() {
-        this.ctx.fillStyle = "#91cbe2";
-        this.ctx.fillRect(0, 0, this.width, this.height);
+    if (!this.background.complete) return;
+
+    this.ctx.drawImage(
+        this.background,
+        0,
+        0,
+        this.width,
+        this.height
+    );
     }
 
     render() {
@@ -236,15 +252,15 @@ class GameView {
 
         }
     }
-        timerSection() {
+    timerSection() {
         const minutes = Math.floor(this.game.timer / 60);
         const seconds = Math.floor(this.game.timer % 60);
         this.ctx.fillStyle = "black";
-        this.ctx.font = "40px Arial";
+        this.ctx.font = "30px Arial";
         this.ctx.textAlign = "center";
         this.ctx.fillText(
             `Temps écoulé: ${minutes}:${seconds}`,
-            800,              
+            this.height / 2,              
             50
         );
     }
@@ -343,32 +359,82 @@ class GameView {
     }
 
     drawVictoryScreen(winner) {
-        this.clear();
+        this.victoryTime += 0.05;
 
-        // fond sombre
-        this.ctx.fillStyle = "rgba(0, 0, 0, 0.85)";
+        // Init
+        if (!this.victoryStarted) {
+            this.victoryStarted = true;
+
+            for (let i = 0; i < 80; i++) {
+            this.victoryParticles.push({
+                x: this.width / 2,
+                y: this.height / 2,
+                vx: Math.cos(i) * (3 + Math.random() * 4),
+                vy: Math.sin(i) * (3 + Math.random() * 4),
+                life: 60,
+                color: `hsl(${Math.random() * 360},100%,60%)`
+                });
+            }
+
+            for (let i = 0; i < 150; i++) {
+                this.victoryParticles.push({
+                    x: Math.random() * this.width,
+                    y: Math.random() * -this.height,
+                    speed: 2 + Math.random() * 4,
+                    size: 4 + Math.random() * 6,
+                    color: `hsl(${Math.random() * 360}, 100%, 60%)`
+                });
+            }
+        }
+
+        // Pulse
+        const pulse = 0.6 + Math.sin(this.victoryTime) * 0.2;
+        this.ctx.fillStyle = `rgba(0,0,0,${pulse})`;
         this.ctx.fillRect(0, 0, this.width, this.height);
 
-        // texte VICTOIRE
-        this.ctx.fillStyle = "gold";
-        this.ctx.font = "64px Arial";
-        this.ctx.textAlign = "center";
-        this.ctx.fillText(" VICTOIRE ", this.width / 2, 120);
+        // particule
+        this.victoryParticles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life--;
 
-        // nom du vainqueur
-        this.ctx.fillStyle = "white";
+            this.ctx.fillStyle = p.color;
+            this.ctx.fillRect(p.x, p.y, 4, 4);
+        });
+
+        // txtvict
+        const scale = 1 + Math.sin(this.victoryTime * 2) * 0.05;
+
+        this.ctx.save();
+        this.ctx.translate(this.width / 2, 120);
+        this.ctx.scale(scale, scale);
+        this.ctx.fillStyle = `hsl(${this.victoryTime * 80}, 100%, 60%)`;
+        this.ctx.font = "bold 72px Arial";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText(" VICTOIRE ", 0, 0);
+        this.ctx.restore();
+
+        const flash = Math.max(0, 1 - this.victoryTime * 2);
+
+        this.ctx.fillStyle = `rgba(255,255,255,${flash})`;
+        this.ctx.fillRect(0, 0, this.width, this.height);
+
+        // winner name
+        this.ctx.fillStyle = `hsl(${this.victoryTime * 80}, 100%, 60%)`;
         this.ctx.font = "32px Arial";
+        this.ctx.textAlign = "center";
         this.ctx.fillText(
-            `${winner.name} (Niveau ${winner.lvl})`,
+            `${winner.name} — GAGNANT`,
             this.width / 2,
             180
         );
 
-        // skin du vainqueur
+        // sprite
         const sprite = this.loadSprite(winner);
         if (!sprite) return;
 
         const size = 256;
+        const floatY = Math.sin(this.victoryTime * 3) * 15;
 
         this.ctx.drawImage(
             sprite.image,
@@ -377,9 +443,22 @@ class GameView {
             FRAME_WIDTH,
             FRAME_HEIGHT,
             this.width / 2 - size / 2,
-            this.height / 2 - size / 2,
+            this.height / 2 - size / 2 + floatY,
             size,
             size
         );
+
+        // halo 
+        this.ctx.beginPath();
+        this.ctx.arc(
+            this.width / 2,
+            this.height / 2,
+            140 + Math.sin(this.victoryTime * 6) * 20,
+            0,
+            Math.PI * 2
+        );
+        this.ctx.strokeStyle = `hsla(${this.victoryTime * 60},100%,60%,0.8)`;
+        this.ctx.lineWidth = 8;
+        this.ctx.stroke();
     }
 }

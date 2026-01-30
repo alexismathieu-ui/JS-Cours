@@ -165,3 +165,6 @@ class Player {
         this.renderY = this.prevY + (this.currentY - this.prevY) * alpha;
     }
 }
+
+export default Player;
+export { directions };

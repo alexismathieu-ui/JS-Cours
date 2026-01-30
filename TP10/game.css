@@ -1,0 +1,148 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background:
+        radial-gradient(circle at top, #1b2735, #090a0f),
+        repeating-linear-gradient(
+            45deg,
+            rgba(0,255,255,0.02) 0px,
+            rgba(0,255,255,0.02) 1px,
+            transparent 1px,
+            transparent 20px
+        );
+
+    font-family: "Segoe UI", Arial, sans-serif;
+    overflow: hidden;
+}
+
+/*gamecontainer*/
+.game-container {
+    width: 1000px;
+    height: 800px;
+    position: relative;
+
+    /* Background animé */
+    background-image: url("images/ground.png");
+    background-size: cover;
+    background-position: center;
+
+    /* Bordure cyber */
+    border-radius: 16px;
+    box-shadow:
+        0 0 30px rgba(0, 255, 255, 0.25),
+        inset 0 0 40px rgba(0, 0, 0, 0.6);
+
+    overflow: hidden;
+}
+
+/* overlay*/
+.game-container::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.03),
+            rgba(0,0,0,0.25)
+        );
+
+    pointer-events: none;
+}
+
+/*canvas*/
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    /* Amélioration visuelle */
+    image-rendering: pixelated;
+}
+
+.game-container {
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.leaderboard-ui {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+
+    width: 260px;
+    padding: 14px;
+
+    background: linear-gradient(
+        180deg,
+        rgba(20, 40, 60, 0.95),
+        rgba(5, 10, 20, 0.95)
+    );
+
+    border-radius: 14px;
+    border: 2px solid rgba(0, 255, 255, 0.4);
+
+    box-shadow:
+        0 0 15px rgba(0,255,255,0.4),
+        inset 0 0 10px rgba(0,255,255,0.2);
+
+    color: white;
+    font-family: 'Segoe UI', Arial;
+    backdrop-filter: blur(4px);
+}
+
+.leaderboard-ui h2 {
+    text-align: center;
+    color: #00fff2;
+    margin-bottom: 12px;
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 6px rgba(0,255,255,0.8);
+}
+
+/* Joueur vivant */
+.leaderboard-ui .player {
+    background: rgba(0, 255, 255, 0.12);
+    border-radius: 8px;
+    padding: 6px 8px;
+    margin-bottom: 6px;
+
+    font-family: monospace;
+    font-size: 14px;
+
+    color: #ffffff;
+    text-shadow: 0 0 4px rgba(0,0,0,0.8);
+
+    box-shadow: inset 0 0 6px rgba(0,255,255,0.3);
+}
+
+/* Joueur mort */
+.leaderboard-ui .player.dead {
+    background: rgba(120, 0, 0, 0.4);
+    color: #ff6b6b;
+
+    text-shadow: 0 0 6px rgba(255,0,0,0.6);
+    box-shadow: inset 0 0 6px rgba(255,0,0,0.3);
+}

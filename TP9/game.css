@@ -1,48 +1,121 @@
-/* Reset basique */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Fond de page */
 body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 
-    background: radial-gradient(circle at top, #1b2735, #090a0f);
-    font-family: Arial, sans-serif;
+    background:
+        radial-gradient(circle at top, #1b2735, #090a0f),
+        repeating-linear-gradient(
+            45deg,
+            rgba(0,255,255,0.02) 0px,
+            rgba(0,255,255,0.02) 1px,
+            transparent 1px,
+            transparent 20px
+        );
+
+    font-family: "Segoe UI", Arial, sans-serif;
+    overflow: hidden;
 }
 
-/* Conteneur du jeu */
+/*gamecontainer*/
 .game-container {
-    padding: 20px;
-    border-radius: 16px;
+    width: 1200px;
+    height: 800px;
+    position: relative;
 
-    background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+    /* Background animé */
+    background-image: url("images/Sol.gif");
+    background-size: cover;
+    background-position: center;
+
+    /* Bordure cyber */
+    border-radius: 16px;
     box-shadow:
-        0 0 30px rgba(0, 0, 0, 0.8),
-        inset 0 0 20px rgba(255, 255, 255, 0.05);
+        0 0 30px rgba(0, 255, 255, 0.25),
+        inset 0 0 40px rgba(0, 0, 0, 0.6);
+
+    overflow: hidden;
 }
 
-/* Canvas */
+/* overlay*/
+.game-container::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.03),
+            rgba(0,0,0,0.25)
+        );
+
+    pointer-events: none;
+}
+
+/*canvas*/
 canvas {
-    display: block;
-    border-radius: 12px;
+    position: absolute;
+    top: 0;
+    left: 0;
 
-    background: linear-gradient(
-        to bottom,
-        #91cbe2 0%,
-        #6fb1cc 50%,
-        #4a8fa8 100%
-    );
-
-    box-shadow:
-        0 0 25px rgba(0, 0, 0, 0.9),
-        inset 0 0 15px rgba(255, 255, 255, 0.15);
-
+    /* Amélioration visuelle */
     image-rendering: pixelated;
 }
 
+.game-container {
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.leaderboard-ui {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+
+    width: 240px;
+    padding: 12px;
+
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 12px;
+
+    box-shadow: 0 0 20px rgba(0,255,255,0.3);
+    color: white;
+
+    font-family: 'Segoe UI', Arial;
+}
+
+.leaderboard-ui h2 {
+    text-align: center;
+    color: #00fff2;
+    margin-bottom: 10px;
+}
+
+.leaderboard-ui .player {
+    font-family: monospace;
+    font-size: 14px;
+    padding: 4px 0;
+}
+
+.leaderboard-ui .dead {
+    color: #777;
+}

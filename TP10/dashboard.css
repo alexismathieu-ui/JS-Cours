@@ -1,0 +1,184 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #1b2735, #090a0f);
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #eaeaea;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 16px;
+}
+
+/* titre */
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 32px;
+    color: #00fff2;
+    text-shadow: 0 0 10px rgba(0, 255, 242, 0.6);
+    width: 100%;
+    max-width: 1100px;
+}
+
+/* conteneur principal */
+.dashboard-root {
+    width: 100%;
+    max-width: 1100px;
+}
+
+/* controls (serveur + status) */
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.35);
+    box-shadow: 0 0 20px rgba(0, 255, 242, 0.12);
+    border: 1px solid rgba(0, 255, 242, 0.25);
+    margin-bottom: 18px;
+}
+
+.controls label {
+    font-size: 14px;
+    color: #eaeaea;
+}
+
+.status {
+    margin-left: auto;
+    font-size: 14px;
+    opacity: 0.9;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: rgba(20, 30, 45, 0.55);
+    border: 1px solid rgba(0, 255, 242, 0.18);
+}
+
+/* champs */
+input,
+select {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #00fff2;
+    background: #0e1624;
+    color: white;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    box-shadow: 0 0 10px rgba(0, 255, 242, 0.6);
+}
+
+button {
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 255, 242, 0.55);
+    background: linear-gradient(90deg, rgba(0, 255, 242, 0.25), rgba(0, 119, 255, 0.25));
+    color: #eaeaea;
+    cursor: pointer;
+    font-size: 14px;
+    transition: transform 0.06s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+button:hover {
+    box-shadow: 0 0 12px rgba(0, 255, 242, 0.25);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+/* layout principal */
+.main {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1.6fr;
+    gap: 16px;
+}
+
+/* panneaux */
+.panel {
+    background: rgba(0, 0, 0, 0.45);
+    padding: 16px;
+    border-radius: 14px;
+    box-shadow: 0 0 20px rgba(0, 255, 242, 0.12);
+    border: 1px solid rgba(0, 255, 242, 0.2);
+    min-height: 120px;
+}
+
+h2 {
+    margin-bottom: 10px;
+    color: #00fff2;
+}
+
+/* stats (rempli par dashboard.js dans #playerStats) */
+.stats-box {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.stats-box p,
+.stats-box .stat,
+.stats-box div {
+    background: rgba(20, 30, 45, 0.9);
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.stats-box span,
+.stats-box strong {
+    color: #00fff2;
+    font-weight: bold;
+}
+
+/* tableau classement */
+.ranking-table,
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+thead {
+    background: linear-gradient(90deg, #00fff2, #0077ff);
+}
+
+thead th {
+    padding: 12px;
+    color: black;
+    font-size: 14px;
+    text-align: left;
+}
+
+tbody tr {
+    background: rgba(255, 255, 255, 0.05);
+    transition: background 0.2s;
+}
+
+tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+tbody tr:hover {
+    background: rgba(0, 255, 242, 0.2);
+}
+
+td {
+    padding: 10px;
+    font-size: 14px;
+}
